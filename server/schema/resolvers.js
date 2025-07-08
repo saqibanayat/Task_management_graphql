@@ -6,7 +6,7 @@ const resolvers = {
       return Userlist;
     },
     user(parent, args) {
-      console.log(args.id);
+      
       return Userlist.find((e) => e.id == args.id);
     },
   },
