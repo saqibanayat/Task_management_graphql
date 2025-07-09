@@ -89,8 +89,8 @@ const mutation = new GraphQLObjectType({
       type: UserSchema,
       args: {
         id: { type: new GraphQLNonNull(GraphQLID) },
-        name: { type: new GraphQLNonNull(GraphQLString) },
-        email: { type: new GraphQLNonNull(GraphQLString) },
+        name: { type: GraphQLString },
+        email: { type:GraphQLString },
       },
       resolve(parent, args) {
         return User.findByIdAndUpdate(
@@ -130,7 +130,36 @@ const task = new Task({
 })
 return task.save();
         }
-    }
+    },
+
+    updateTask:{
+      type:TaskSchema,
+      args:{
+        id:{type:new GraphQLNonNull(GraphQLID)},
+        title:{type:new GraphQLNonNull(GraphQLString)},
+        description:{type:new GraphQLNonNull(GraphQLString)}
+      },
+      resolve(parent,args){
+        return Task.findByIdAndUpdate(args.id,{
+          $set:{
+            title:args.title,
+            description:args.description
+          }
+        },{
+            new:true
+          })
+      }
+    },
+
+  deleteTask:{
+    type:TaskSchema,
+    args:{id:{type:new GraphQLNonNull(GraphQLID)}},
+  resolve(parent,args){
+    return Task.findByIdAndDelete(args.id)
+
+  }
+  }
+
   },
 });
 
